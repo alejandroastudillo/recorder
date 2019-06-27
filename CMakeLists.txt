@@ -4,15 +4,15 @@ set (CMAKE_CXX_STANDARD 11)
 project(Recorder)
 
 add_library(recorder SHARED recorder.hpp recorder.cpp)
-add_executable(test test.cpp)
-target_link_libraries(test recorder)
+add_executable(test1 test.cpp)
+target_link_libraries(test1 recorder)
 
-install(TARGETS test DESTINATION bin)
+install(TARGETS test1 DESTINATION bin)
 file(GLOB HEADERS *.hpp)
 install(FILES ${HEADERS} DESTINATION include)
 install(TARGETS recorder
-	PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE 
-				GROUP_READ GROUP_WRITE GROUP_EXECUTE 
+	PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
+				GROUP_READ GROUP_WRITE GROUP_EXECUTE
 				WORLD_READ WORLD_EXECUTE
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib

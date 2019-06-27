@@ -165,6 +165,9 @@ Recorder erf(const Recorder& arg) {
 Recorder fabs(const Recorder& arg) {
     return Recorder::from_unary(arg, fabs(arg.value_), "fabs");
 }
+Recorder abs(const Recorder& arg) {
+    return Recorder::from_unary(arg, fabs(arg.value_), "fabs");
+}
 Recorder ceil(const Recorder& arg) {
     return Recorder::from_unary(arg, ceil(arg.value_), "ceil");
 }
@@ -222,7 +225,7 @@ std::string Recorder::repr() const {
 }
 
 bool is_suspicious(double v) {
-  return (v>0 && v <1e-200) || (v<0 && v >-1e-200); 
+  return (v>0 && v <1e-200) || (v<0 && v >-1e-200);
 }
 
 Recorder Recorder::from_binary(const Recorder& lhs, const Recorder& rhs, double res, const std::string& op) {
@@ -259,16 +262,16 @@ Recorder Recorder::from_unary(const Recorder& arg, double res, const std::string
 
 class StreamWrapper {
 public:
-    StreamWrapper() {
-        stream = new std::ofstream("foo.m");
+    StreamWrapper(std::string name) {
+        stream = new std::ofstream(name + ".m");
         (*stream) << std::scientific << std::setprecision(16);
-        (*stream) << "function [y,a]=foo(x)" << std::endl;
+        (*stream) << "function [y,a]=" << name << "(x)" << std::endl;
         (*stream) << "nom = nargin==0;" << std::endl;
     }
 
     std::ofstream* stream;
 };
-static StreamWrapper stream_wrapper{};
+static StreamWrapper stream_wrapper("foo");
 
 
 std::ofstream& Recorder::stream() {
