@@ -1,5 +1,25 @@
 #include "recorder.hpp"
 
+#include <fstream>
+#include <iostream>
+
+void rename_script(std::string in_name, std::string out_name)
+{
+    // std::rename("recorded.m", "ja.m");
+    std::ifstream in(in_name+".m");
+    std::ofstream out(out_name+".m");
+    std::string v1, v2;
+    in >> v1 >> v2;
+    v2 = "[y,a]="+out_name+"(x)";
+    out << v1 << " " << v2;
+    out << in.rdbuf();
+    out.close();
+    in.close();
+
+    std::remove(in_name.append(".m").c_str());
+}
+
+
 int main(){
 
   double p = 7;
@@ -46,9 +66,11 @@ int main(){
   double znum;
   z >>= znum;
 
- Recorder::stop_recording();
+  Recorder::stop_recording();
 
   std::cout << znum << std::endl;
+
+  rename_script("recorded", "dyn");
 
   return 0;
 }

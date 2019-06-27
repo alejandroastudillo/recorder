@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -7,7 +5,10 @@
 #include <stdexcept>
 #include <iomanip>
 #include <cmath>
+
 #include "recorder.hpp"
+
+static std::string filename = "recorded";
 
 static int counter_asserts = 0;
 
@@ -25,7 +26,6 @@ Recorder::Recorder(const Recorder& r) {
 Recorder::~Recorder() {
        if(id_ == 0) std::cout << "goodbyw" << id_ << ":" << value_ << std::endl;
 }
-
 Recorder::Recorder() : id_(-1), value_(3.14) {}
 Recorder::Recorder(double value) : id_(-1), value_(value) {}
 void Recorder::operator<<=(double value) {
@@ -259,7 +259,6 @@ Recorder Recorder::from_unary(const Recorder& arg, double res, const std::string
   }
 }
 
-
 class StreamWrapper {
 public:
     StreamWrapper(std::string name) {
@@ -271,12 +270,13 @@ public:
 
     std::ofstream* stream;
 };
-static StreamWrapper stream_wrapper("foo");
 
+static StreamWrapper stream_wrapper(filename);
 
 std::ofstream& Recorder::stream() {
   return *stream_wrapper.stream;
 };
+
 Recorder::Recorder(double value, int id) {
   id_ = id;
   value_ = value;
